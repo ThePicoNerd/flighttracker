@@ -107,7 +107,7 @@ ExtPlane.on("data-ref", (dataref, value) => {
 
 app.get("/", (req, res) => {
   res.json(flightdata);
-})
+});
 
 app.get("/latlng", (req, res) => {
   res.json(flightdata.latlng);
