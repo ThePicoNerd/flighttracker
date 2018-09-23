@@ -1,0 +1,16 @@
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  tags:
+    - deployment
+  script:
+    - rsync -auv --exclude node_modules --exclude .git -e ssh ${CI_PROJECT_DIR}/ ${PRODUCTION_SERVER_USER}@${PRODUCTION_SERVER_IP}:${PRODUCTION_SERVER_DIRECTORY}/
+    - ssh -o StrictHostKeyChecking=no ${PRODUCTION_SERVER_USER}@${PRODUCTION_SERVER_IP} "cd ${PRODUCTION_SERVER_DIRECTORY}; docker-compose build; docker-compose up -d --no-deps"
